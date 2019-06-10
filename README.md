@@ -1,0 +1,2 @@
+pierwsza modyfikacja readme
+
