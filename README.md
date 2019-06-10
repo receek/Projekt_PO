@@ -1,2 +1,3 @@
-pierwsza modyfikacja readme
+pierwsza  ,avskdajlefgfubenlckeuv;i bjdlskjfaslaejkbw
+
 
