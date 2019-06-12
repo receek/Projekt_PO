@@ -1,0 +1,3 @@
+pierwsza  ,avskdajlefgfubenlckeuv;i bjdlskjfaslaejkbw
+
+
