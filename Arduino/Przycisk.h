@@ -6,8 +6,8 @@
 class Przycisk
 {
 private:
-	static const int first_push_time = 50; //ms
-	static const int pushing_time = 20; //ms
+	static const int first_push_time = 30; //ms
+	static const int pushing_time = 200; //ms
 	const int pin;
 	bool state;
 	

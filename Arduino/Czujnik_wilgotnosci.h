@@ -1,25 +1,25 @@
-#ifndef Czujnik_temperatury_h
-#define Czujnik_temperatury_h
+#ifndef Czujnik_wilgotnosci_h
+#define Czujnik_wilgotnosci_h
 
 #include "Arduino.h"
-#include <OneWire.h>
-#include <DallasTemperature.h>
+#include "DHT.h"
 
 #include "Modul.h"
 
-class Czujnik_temperatury : public Modul
+class Czujnik_wilgotnosci : public Modul
 {
 private:
 	int pin;
-	float temperature, last_temp;
-	OneWire wire;
-	DallasTemperature sensor;
-	DeviceAddress address;
+	int humidity;
+	int last_humidity;
+
+	DHT sensor;
+
   
 public:
 
-	Czujnik_temperatury(): wire(0) {}
- 	Czujnik_temperatury(int, uint8_t[]);
+	//Czujnik_wilgotnosci() {}
+ 	Czujnik_wilgotnosci(int);
 
 	//virtual void up_button(bool);
     //virtual void down_button(bool);

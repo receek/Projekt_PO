@@ -1,32 +1,30 @@
-#ifndef Czujnik_temperatury_h
-#define Czujnik_temperatury_h
+#ifndef Czujnik_odleglosci_h
+#define Czujnik_odleglosci_h
 
 #include "Arduino.h"
-#include <OneWire.h>
-#include <DallasTemperature.h>
 
 #include "Modul.h"
 
-class Czujnik_temperatury : public Modul
+class Czujnik_odleglosci : public Modul
 {
 private:
-	int pin;
-	float temperature, last_temp;
-	OneWire wire;
-	DallasTemperature sensor;
-	DeviceAddress address;
+	int echo_pin;
+	int trig_pin;
+	long distance;
+	long last_distance;
+
   
 public:
 
-	Czujnik_temperatury(): wire(0) {}
- 	Czujnik_temperatury(int, uint8_t[]);
+	Czujnik_odleglosci() {};
+ 	Czujnik_odleglosci(int, int);
 
 	//virtual void up_button(bool);
     //virtual void down_button(bool);
     //virtual void apply_button(bool); 
     //virtual void choose_button(bool);
 
-    //virtual bool is_modyfing();
+   //virtual bool is_modyfing();
 
 	virtual void print_data(LiquidCrystal*, bool);
 

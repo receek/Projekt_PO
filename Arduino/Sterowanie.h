@@ -5,31 +5,39 @@
 #include <LiquidCrystal.h>
 
 #include "Przycisk.h"
+#include "Modul.h"
 
 class Sterowanie
 {
 private:
 
-  unsigned long timer;
+	int modules_number;
+	int module_index;
+	int tasks_number;
+	int remote_module;
+	bool modyfing;
+	bool screen_change;
 
-  LiquidCrystal* lcd;
+	int * tasks;
 
-  Przycisk* increase_button;
-  Przycisk* decrease_button;
-  Przycisk* apply_button;
-  Przycisk* choose_button;
+	LiquidCrystal* lcd;
 
-  //ETH i Module pointer
+	Przycisk* up_button;
+	Przycisk* down_button;
+	Przycisk* apply_button;
+	Przycisk* choose_button;
 
-  bool increase_pushed();
-  bool decrease_pushed();
-  bool apply_pushed();
-  bool choose_pushed();  
+	Modul ** modules;
 
 public:
 
-  Sterowanie(LiquidCrystal*, Przycisk*, Przycisk*, Przycisk*, Przycisk*);
+ 	Sterowanie(int, LiquidCrystal*, Przycisk*, Przycisk*, Przycisk*, Przycisk*);
 
+ 	void working_loop();
+
+ 	void add_module(Modul*, int);
+
+ 	void begin();
 
 };
 
