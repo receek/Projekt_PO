@@ -5,32 +5,16 @@ pin_analog_in(in),
 pin_pwm(out),
 value(analogRead(in)),
 last_value(-1),
+range(200),
 active(true) 
 {  
 	saved_time = millis();
-	refresh_time = 50;
+	refresh_time = 150;
 	blocked = false;
 
 	pinMode(pin_pwm, OUTPUT);
 
 }
-
-
-/*void Lampka::up_state(bool state)
-{
-	if(state && value < 255)
-	{
-		value += 1;
-	}
-}
-
-void Lampka::down_state(bool state)
-{
-	if(state && value > 0)
-	{
-		value -= 1;
-	}
-}*/
 
 void Lampka::apply_state(bool state)
 {
@@ -44,27 +28,16 @@ void Lampka::apply_state(bool state)
 		else
 		{
 			active = true;
-			float lighting;
-			lighting = 255 * (1024 - value) / 1024;;
-			analogWrite(pin_pwm, lighting);
+			if(value <= range)
+			{
+				double lighting;
+				lighting = 255 * (1024 - value) / 1024;
+				analogWrite(pin_pwm, lighting);
+			}
 		}
 		delay(500);
 	}
 }
-
-/*void Lampka::choose_state(bool state)
-{
-	if(modyfing)
-	{
-		blocked = false;
-		modyfing = false;
-	}
-	else
-	{
-		blocked = true;
-		modyfing = true;
-	}
-}*/
 
 bool Lampka::is_modyfing()
 {
@@ -82,7 +55,8 @@ void Lampka::print_data(LiquidCrystal* lcd, bool screen_change)
 	{
 		lcd->clear();
 		lcd->print("Light: ");
-		lcd->print(double(255) * (double(value) / 1024));
+		lcd->print(double(value) / 1024 * 100);
+		lcd->print("%");
 
 		last_value = value;
 	}
@@ -102,11 +76,11 @@ void Lampka::execute_task()
 
   		lighting = 255 * (1024 - value) / 1024;
 
-  		if(active && value <= 200)
+  		if(active && value <= range)
   		{
-  			analogWrite(pin_pwm, double(255) - (double(255) * (double(value) / 100)));	
+  			analogWrite(pin_pwm, double(255) - (double(255) * (double(value) / range)));	
   		}
-  		else if(last_value != value && last_value <= 200)
+  		else if(last_value != value && last_value <= range)
   		{
   			analogWrite(pin_pwm, 0);	
   		}
@@ -116,3 +90,51 @@ void Lampka::execute_task()
 	}
 	return;
 }
+
+void Lampka::write_info(char* buffer, int* i)
+{
+	copy_str("LAM\n", 4, buffer, *i);
+	*i += 4;
+}
+
+int Lampka::write_data(char* buffer)
+{
+	int size = int_to_char(buffer, value, 0);
+	buffer[size++] = '\n';
+	if(active)
+	{
+		copy_str("ON", 2, buffer, size);
+		size += 2;
+	}
+	else
+	{
+		copy_str("OFF", 3, buffer, size);
+		size += 3;
+	}
+
+	buffer[size++] = '\n';
+
+	return size;
+
+}
+
+int Lampka::procces_data(char* send_buff, char* recv_buff, int pos)
+{
+	int size = 0;
+	if(compare_str("STR", recv_buff, pos, 3))
+	{
+		if(!active) apply_state(true);
+	}
+	else if(compare_str("STP", recv_buff, pos, 3))
+	{
+		if(active) apply_state(true);
+	}
+	else
+	{
+		send_buff[0] = recv_buff[pos]; 
+		size = 1;
+	}
+
+	return size;
+}
+

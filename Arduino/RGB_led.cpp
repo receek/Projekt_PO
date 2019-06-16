@@ -1,7 +1,7 @@
 #include "RGB_led.h"
 
 RGB_led::RGB_led(int p[]):
-modyfing(-1), active(true)
+modyfing(-1), active(true), remote(false)
 {  
 	for(int i = 0; i < 3; i++)
 	{
@@ -87,12 +87,16 @@ bool RGB_led::is_modyfing()
 	return modyfing >= 0;
 }
 
+bool RGB_led::is_tasking()
+{
+	return true;
+}
+
 void RGB_led::print_data(LiquidCrystal* lcd, bool screen_change)
 {
 	if(modyfing < 0)
 	{
-		// obsługa dla ethernet
-		if(screen_change)
+		if(screen_change || remote)
 		{
 			lcd->clear();
 			lcd->print("R:");
@@ -121,5 +125,110 @@ void RGB_led::print_data(LiquidCrystal* lcd, bool screen_change)
 
 void RGB_led::execute_task()
 {
-	return;
+	if(active && remote)
+	{
+		for(int i = 0; i < 3; i++)
+		{
+			analogWrite(pins[i], 255 - value[i]);
+		}
+
+		remote = false;
+	}
+}
+
+void RGB_led::write_info(char* buffer, int* i)
+{
+	copy_str("RGB\n", 4, buffer, *i);
+	*i += 4;
+}
+
+
+int RGB_led::write_data(char* buffer)
+{
+	int size = int_to_char(buffer, value[0], 0);
+	buffer[size++] = '\n';
+	size = int_to_char(buffer, value[1], size);
+	buffer[size++] = '\n';
+	size = int_to_char(buffer, value[2], size);
+	buffer[size++] = '\n';
+	if(active)
+	{
+		copy_str("ON", 2, buffer, size);
+		size += 2;
+	}
+	else
+	{
+		copy_str("OFF", 3, buffer, size);
+		size += 3;
+	}
+
+	buffer[size++] = '\n';
+
+	return size;
+
+}
+
+int RGB_led::procces_data(char* send_buff, char* recv_buff, int pos)
+{
+	int size = 0;
+	if(compare_str("CHN", recv_buff, pos, 3))
+	{
+		pos += 4;
+
+		int  v = 0;
+		while(recv_buff[pos] != ' ')
+		{
+			v *= 10;
+			v += int(recv_buff[pos++]) - int('0');
+		}
+		pos++;
+
+		if(v >= 0 && v <= 255)
+		{
+			value[0] = v;
+		}
+
+		v = 0;
+		while(recv_buff[pos] != ' ')
+		{
+			v *= 10;
+			v += int(recv_buff[pos++]) - int('0');
+		}
+		pos++;
+		
+		if(v >= 0 && v <= 255)
+		{
+			value[1] = v;
+		}
+
+		v = 0;
+		while(recv_buff[pos] != '\n')
+		{
+			v *= 10;
+			v += int(recv_buff[pos++]) - int('0');
+		}
+		pos++;
+		
+		if(v >= 0 && v <= 255)
+		{
+			value[2] = v;
+		}
+
+		remote = true;
+	}
+	else if(compare_str("STR", recv_buff, pos, 3))
+	{
+		if(!active) apply_state(true);
+	}
+	else if(compare_str("STP", recv_buff, pos, 3))
+	{
+		if(active) apply_state(true);
+	}
+	else
+	{
+		send_buff[0] = recv_buff[pos]; 
+		size = 1;
+	}
+
+	return size;
 }

@@ -3,6 +3,8 @@
 
 #include "Arduino.h"
 #include <LiquidCrystal.h>
+#include <SPI.h>
+#include <Ethernet.h>
 
 #include "Przycisk.h"
 #include "Modul.h"
@@ -18,20 +20,33 @@ private:
 	bool modyfing;
 	bool screen_change;
 
-	int * tasks;
-
 	LiquidCrystal* lcd;
+
+	EthernetServer* socket;
+	EthernetClient client;
 
 	Przycisk* up_button;
 	Przycisk* down_button;
 	Przycisk* apply_button;
 	Przycisk* choose_button;
-
+	
+	int * tasks;
 	Modul ** modules;
+
+
+	bool compare_str(char*, char*, int);
+
+	void read_request();
+	int write_availble(char*);
+	int write_modules_info(char *);
+	int int_to_char(char*, int);
+	void copy_str(char*, int, char*, int);
+
+
 
 public:
 
- 	Sterowanie(int, LiquidCrystal*, Przycisk*, Przycisk*, Przycisk*, Przycisk*);
+ 	Sterowanie(int, LiquidCrystal*, EthernetServer*, Przycisk*, Przycisk*, Przycisk*, Przycisk*);
 
  	void working_loop();
 

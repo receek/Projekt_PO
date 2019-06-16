@@ -12,6 +12,7 @@ private:
     int value;
     int last_value;
     bool pushed;
+    bool remote;
     bool buzzing;
     bool modyfing;
   
@@ -26,15 +27,15 @@ public:
     virtual void choose_state(bool);
 
     virtual bool is_modyfing();
+    virtual bool is_tasking();
 
     virtual void print_data(LiquidCrystal*, bool);
 
     virtual void execute_task();
 
-
-  //virtual void define_module();
-  //virtual void send_info();
-  //virtual void receive_command();
+    virtual void write_info(char*, int*);
+    virtual int write_data(char* buffer);
+    virtual int procces_data(char*, char*, int);
 };
 
 

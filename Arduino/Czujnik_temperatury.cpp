@@ -21,32 +21,6 @@ sensor(&wire)
 	
 }
 
-/*
-void Czujnik_temperatury::up_pushed()
-{
-	
-}
-
-void Czujnik_temperatury::down_pushed()
-{
-  
-}
-
-void Czujnik_temperatury::apply_pushed()
-{
-  
-}
-
-void Czujnik_temperatury::choose_pushed()
-{
-  
-}
-
-bool Czujnik_temperatury::is_modyfing()
-{
-	return false;
-}*/
-
 void Czujnik_temperatury::print_data(LiquidCrystal* lcd, bool screen_change)
 {
 	
@@ -73,4 +47,20 @@ void Czujnik_temperatury::execute_task()
 		saved_time = millis();
 	}
 	return;
+}
+
+void Czujnik_temperatury::write_info(char* buffer, int* i)
+{
+	copy_str("CZT\n", 4, buffer, *i);
+	*i += 4;
+}
+
+int Czujnik_temperatury::write_data(char* buffer)
+{
+	execute_task();
+	int size = int_to_char(buffer, temperature, 0);;
+	buffer[size] = '\n';
+
+	return size + 1;
+
 }

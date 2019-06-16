@@ -4,6 +4,8 @@
 #include "Arduino.h"
 
 #include <LiquidCrystal.h>
+#include <SPI.h>
+#include <Ethernet.h>
 
 class Modul
 {
@@ -15,13 +17,11 @@ protected:
 	unsigned long refresh_time;
 
 	bool blocked;
-	//bool remote_blocked;
 	Modul() {}
 	
-  
+  	bool compare_str(char*, char*, int, int);
+
 public:
-	
-  //virtual int get_id();
 
 	virtual void up_state(bool) {}
 	virtual void down_state(bool) {}
@@ -33,13 +33,14 @@ public:
 
 	virtual void print_data(LiquidCrystal*, bool) {}
 
-  //metoda do sprawdzenia czasu
 	virtual void execute_task() {}
 
+	virtual void write_info(char*, int*);
+	virtual int write_data(char*) {} //; do zmiany
+	virtual int procces_data(char*, char*, int);
 
-  //virtual void define_module();
-  //virtual void send_info();
-  //virtual void receive_command();
+	virtual int int_to_char(char*, int, int);
+	virtual void copy_str(char*, int, char*, int);
 };
 
 

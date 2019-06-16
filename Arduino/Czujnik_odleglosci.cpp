@@ -16,35 +16,9 @@ last_distance(-1)
 	
 }
 
-/*
-void Czujnik_temperatury::up_pushed()
-{
-	
-}
-
-void Czujnik_temperatury::down_pushed()
-{
-  
-}
-
-void Czujnik_temperatury::apply_pushed()
-{
-  
-}
-
-void Czujnik_temperatury::choose_pushed()
-{
-  
-}
-
-bool Czujnik_odleglosci::is_modyfing()
-{
-	return false;
-}*/
-
 void Czujnik_odleglosci::print_data(LiquidCrystal* lcd, bool screen_change)
 {
-	
+
 	if(distance != last_distance || screen_change)
 	{
 		lcd->clear();
@@ -74,4 +48,20 @@ void Czujnik_odleglosci::execute_task()
 	    saved_time = millis();
 	}
 	return;
+}
+
+void Czujnik_odleglosci::write_info(char* buffer, int* i)
+{
+	copy_str("CZO\n", 4, buffer, *i);
+	*i += 4;
+}
+
+int Czujnik_odleglosci::write_data(char* buffer)
+{
+	execute_task();
+	int size = int_to_char(buffer, distance, 0);
+	buffer[size] = '\n';
+
+	return size + 1;
+
 }

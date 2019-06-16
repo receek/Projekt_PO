@@ -1,7 +1,7 @@
 #include "Buzzer.h"
 
 Buzzer::Buzzer(int out):
-pin(out), value(128), last_value(-1), pushed(false), buzzing(false), modyfing(false)
+pin(out), value(128), last_value(-1), pushed(false), remote(false), buzzing(false), modyfing(false)
 {  
 	saved_time = millis();
 	refresh_time = 50;
@@ -31,13 +31,19 @@ void Buzzer::down_state(bool state)
 
 void Buzzer::apply_state(bool state)
 {
- 	if(state && !pushed)
+	if(remote && pushed)
+	{
+		remote = false;
+	}
+ 	else if(state && !pushed)
  	{
  		pushed = true;
+ 		modyfing = true;
  	}
  	else if(!state && pushed)
  	{
  		pushed = false;
+ 		modyfing = false;
  	}
 }
 
@@ -60,17 +66,18 @@ bool Buzzer::is_modyfing()
 	return modyfing;
 }
 
+bool Buzzer::is_tasking()
+{
+	return true;
+}
+
 void Buzzer::print_data(LiquidCrystal* lcd, bool screen_change)
 {
-	//lcd->clear();
-	//	lcd->print("Buzzer: ");
-	//	delay(3000);
 	if(last_value != value || screen_change)
 	{
 		lcd->clear();
 		lcd->print("Buzzer: ");
 		lcd->print(value);
-		//delay(3000);
 
 		if(modyfing)
 		{
@@ -90,18 +97,78 @@ void Buzzer::execute_task()
   	
   	if(actual_time - saved_time >= refresh_time)
   	{	
-  		if(pushed && !buzzing)
+  		if((pushed || remote) && !buzzing)
 		{
 			buzzing = true;
 			analogWrite(pin, value);
+			
 		}
-  		else if(!pushed && buzzing)
+		else if(remote && buzzing)
+		{
+			analogWrite(pin, value);
+		}
+  		else if(!pushed && !remote && buzzing)
 		{
 			buzzing = false;
 			analogWrite(pin, 0);
 		}
-	
+		
+		value != last_value;
 		saved_time = millis();
 	}
 	return;
+}
+
+void Buzzer::write_info(char* buffer, int* i)
+{
+	copy_str("BUZ\n", 4, buffer, *i);
+	*i += 4;
+}
+
+int Buzzer::write_data(char* buffer)
+{
+	int size = int_to_char(buffer, value, 0);
+	buffer[size] = '\n';
+
+	return size + 1;
+
+}
+
+int Buzzer::procces_data(char* send_buff, char* recv_buff, int pos)
+{
+	int size = 0;
+	if(compare_str("CHN", recv_buff, pos, 3))
+	{
+		pos += 4;
+
+		int  v = 0;
+		while(recv_buff[pos] != '\n')
+		{
+			v *= 10;
+			v += int(recv_buff[pos++]) - int('0');
+		}
+		
+		if(v >= 0 && v <= 255)
+		{
+			value = v;
+			if(buzzing) remote = true;
+		}
+	}
+	else if(compare_str("STR", recv_buff, pos, 3))
+	{
+		remote = true;
+	}
+	else if(compare_str("STP", recv_buff, pos, 3))
+	{
+		remote = false;
+		
+	}
+	else
+	{
+		send_buff[0] = recv_buff[pos]; 
+		size = 1;
+	}
+
+	return size;
+	
 }

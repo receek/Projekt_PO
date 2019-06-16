@@ -14,39 +14,12 @@ sensor(wire_pin, DHT11)
 	sensor.begin();
 	//humidity = sensor.readHumidity();
 }
-
-/*
-void Czujnik_temperatury::up_pushed()
-{
-	
-}
-
-void Czujnik_temperatury::down_pushed()
-{
-  
-}
-
-void Czujnik_temperatury::apply_pushed()
-{
-  
-}
-
-void Czujnik_temperatury::choose_pushed()
-{
-  
-}
-
-bool Czujnik_temperatury::is_modyfing()
-{
-	return false;
-}*/
-
 void Czujnik_wilgotnosci::print_data(LiquidCrystal* lcd, bool screen_change)
 {
 	if(humidity != last_humidity || screen_change)
 	{
 		lcd->clear();
-		lcd->print(sensor.readHumidity());
+		lcd->print(humidity);
 		lcd->print("% RH");
 		last_humidity = humidity;
 	}
@@ -65,4 +38,19 @@ void Czujnik_wilgotnosci::execute_task()
 		saved_time = millis();
 	}
 	return;
+}
+
+void Czujnik_wilgotnosci::write_info(char* buffer, int* i)
+{
+	copy_str("CZW\n", 4, buffer, *i);
+	*i += 4;
+}
+
+int Czujnik_wilgotnosci::write_data(char* buffer)
+{
+	execute_task();
+	int size = int_to_char(buffer, humidity, 0);;
+	buffer[size] = '\n';
+
+	return size + 1;
 }
