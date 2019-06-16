@@ -1,0 +1,38 @@
+﻿<Page x:Class="ProjektPO.Home"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ProjektPO"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Home">
+
+    <Grid Background="#eef">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="280"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Home" Grid.ColumnSpan="2" HorizontalAlignment="Center"
+                   VerticalAlignment="Center" FontSize="70"/>
+        <StackPanel Background="#ccc" Grid.Row="1" Grid.RowSpan="3">
+            <Button Margin="5" Name="CheckConnectionButton" Content="Check Connection" FontSize="20" Click="CheckConnectionButtonClick"/>
+            <Button Margin="5" Name="LoadModulesButton" Content="Load Modules" FontSize="20" Click="LoadModulesButtonClick"/>
+            <Button Margin="5" Name="ChooseModulesButton" Content="Choose Modules" FontSize="20" Click="ChooseModulesButtonClick"/>
+        </StackPanel>
+        <StackPanel Background="#dde" Grid.Row="1" Grid.Column="1" Grid.RowSpan="3" >
+            <TextBlock Margin="5" x:Name="Connected" Text ="Disconnected" Grid.Row="2" Grid.Column="2" Background="blue" FontSize="20"/>
+        </StackPanel>
+        <Frame Grid.Row="0" Grid.Column="3" Grid.RowSpan="5" x:Name="PODSTRONA" Margin="10" NavigationUIVisibility="Hidden"/>
+    </Grid>
+</Page>
