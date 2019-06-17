@@ -1,0 +1,85 @@
+Mamy 4 główne komendy do porozumiewania się przez sieć:
+
+("Komnda" -> "odpowiedz")
+
+1. Komenda "HLL\n" -> "AVL\n"
+Sprawdzamy czy tą komendą czy łączymy się z Arduino.
+
+2. Komenda "ASK\n" -> "lista modułów"
+Odpowiedź wygląda tak, że w pierwszej lini mamy liczbę całkowitą N, który oznacza ile modułów jest podłączonych do Arduino. W kolejnych N liniach znajdują znajdują się moduły określone 3 znakowymi oznaczeniami. 
+Przykład(#1) zapytania/odpowiedzi który zawiera wszystkie rodzaje modułów:
+
+ASK ->
+
+6
+CZT
+CZO
+CZW
+LAM
+BUZ
+RGB
+
+(Każda linia zakończona znakiem \n)
+
+Każda linia (liczymy od 0) jednoznacznie określa instację modułu tzn. jeśli chcemy komunikować się z modułem CZW z przykładu #1 to będziemy wysyłać informację zawierjącą index/identyfikator/pozycję 2
+
+3. Komenda "VAL 'index'" -> "wartości"
+Tą komendą pytamy o wartości monitorowane na danym module.
+
+Lista odpowiedzi w zależności od modułu:
+
+CZT - liczba całkowita od -127 do 127
+Przykład bazyjący na przykładzie #1: 
+	"VAL 0\n" -> "29\n"
+
+CZO - liczba całkowita nie mniejsza niż 0, wartości większ niż 400 są raczej mało realne, bo czujnik podaje poprawne wartości w zakresie od 0-250. Wartość odległości podana w cm.
+Przykład:
+	"VAL 1\n" -> "154\n"
+
+CZW - liczba całkowita od 0 do 100, wartość oznacza wilgotnośc w %
+Przykład: 
+	"VAL 2\n" -> "52\n"
+
+LAM - liczba całkowita od 0 do 1024 oraz informacja czy lampka jest włączona, wartość oznacza nasłonecznienie w danym zakresie (więcej = silniejsze światło pada na czujnik)
+Przykład:
+	"VAL 3\n" -> "520\nOFF\n" (Lampka włączona)
+lub
+	"VAL 3\n" -> "520\nON\n" (Lampka wyłączona)
+
+BUZ - liczba całkowita od 0 do 255 czyli wartość definiująca dżwięk wydawany z głośnika lub "BLC\n" jesli użytkownik za pomoca przycisków zmienia tą wartość
+Przykład:
+	"VAL 4\n" -> "124\n" (wartość ustawiona na głośnikach)
+lub
+	"VAL 4\n" -> "BLC\n" (wartość głośnika jest modyfikowana)
+
+RGB - 4 linijki wartości, w 3 pierwszych liniach liczby całkowita od 0 do 255 czyli wartość definiująca kolory kolejno Red, Green, Blue. W lini 4 wartość ON/OFF czyli czy lampka jest wyłączona. Możemy również otrzymać "BLC\n" czyli użytkjonik jets w trakcie modyfikacji wartości.
+Przykład:
+	"VAL 5\n" -> "124\n0\n255\nON" (wartości ustawione na diodzie RGB)
+lub
+	"VAL 4\n" -> "BLC\n" (wartości diody RGB jest modyfikowana)
+
+4. Komenda "COM"
+
+Składnia komendy COM w zależności od modułu:
+
+CZT CZO CZW - Dla tych modułów zawsze będzie zwracane słowo "ERR", co oznacza, że tych modułów nie da się modyfikować
+
+LAM: 
+	"COM 3 STR\n" -> ""  (STR włącza lampkę)
+	"COM 3 STP\n" -> ""  (STR wyłącza lampkę)
+
+
+BUZ:
+	"COM 4 CHN 123\n" -> ""  (CHN zmienia wartość głosnika na 123)
+	"COM 4 CHN 123\n" -> "BLC"  (CHN nie zmienia wartości, wartość jest modyfikowana)
+
+	"COM 4 STR\n" -> ""  (STR włącza głośnik)
+	"COM 4 STP\n" -> ""  (STR wyłącza głośnik)
+
+RGB: 
+	"COM 5 CHN 123 54 250\n" -> ""  (CHN zmienia wartość RED na 123, GREEN na 54, BLUE na 250)
+	"COM 5 CHN 123 54 250\n" -> "BLC"  (CHN nie zmienia wartości, wartość jest modyfikowana)
+
+	"COM 5 STR\n" -> ""  (STR włącza lampkę)
+	"COM 5 STP\n" -> ""  (STR wyłącza lampkę)
+
