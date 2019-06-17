@@ -47,6 +47,7 @@ private:
 public:
 
  	Sterowanie(int, LiquidCrystal*, EthernetServer*, Przycisk*, Przycisk*, Przycisk*, Przycisk*);
+ 	~Sterowanie();
 
  	void working_loop();
 

@@ -1,7 +1,13 @@
 #include "Buzzer.h"
 
 Buzzer::Buzzer(int out):
-pin(out), value(128), last_value(-1), pushed(false), remote(false), buzzing(false), modyfing(false)
+pin(out), 
+value(128), 
+last_value(-1), 
+pushed(false), 
+remote(false), 
+buzzing(false), 
+modyfing(false)
 {  
 	saved_time = millis();
 	refresh_time = 50;
@@ -141,12 +147,7 @@ int Buzzer::procces_data(char* send_buff, char* recv_buff, int pos)
 	{
 		pos += 4;
 
-		int  v = 0;
-		while(recv_buff[pos] != '\n')
-		{
-			v *= 10;
-			v += int(recv_buff[pos++]) - int('0');
-		}
+		int  v = char_to_int(recv_buff, &pos, '\n');
 		
 		if(v >= 0 && v <= 255)
 		{
@@ -160,14 +161,11 @@ int Buzzer::procces_data(char* send_buff, char* recv_buff, int pos)
 	}
 	else if(compare_str("STP", recv_buff, pos, 3))
 	{
-		remote = false;
-		
+		remote = false;	
 	}
-	else
-	{
-		send_buff[0] = recv_buff[pos]; 
-		size = 1;
-	}
+
+	copy_str("OK\n", 3, send_buff, 0);
+	size = 3;
 
 	return size;
 	

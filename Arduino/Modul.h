@@ -20,6 +20,8 @@ protected:
 	Modul() {}
 	
   	bool compare_str(char*, char*, int, int);
+  	int char_to_int(char*, int*, char);
+  	void copy_str(char*, int, char*, int);
 
 public:
 
@@ -36,11 +38,12 @@ public:
 	virtual void execute_task() {}
 
 	virtual void write_info(char*, int*);
-	virtual int write_data(char*) {} //; do zmiany
+	virtual int write_data(char*);
 	virtual int procces_data(char*, char*, int);
 
 	virtual int int_to_char(char*, int, int);
-	virtual void copy_str(char*, int, char*, int);
+	
+
 };
 
 

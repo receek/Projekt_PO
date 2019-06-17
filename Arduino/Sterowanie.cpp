@@ -25,18 +25,28 @@ choose_button(choose)
 
 }
 
+Sterowanie::~Sterowanie()
+{
+	for(int i = 0 ; i < modules_number; i++)
+	{
+		if(modules[i] != 0) 
+		{
+			delete modules[i];
+		}
+	}
+
+	delete tasks;
+}
+
 
 void Sterowanie::working_loop()
 {
-	//lcd->clear();
-	//lcd->print("start");
-
 	if(modyfing)
 	{	
 		modules[module_index]->up_state(up_button->get_state());
 		modules[module_index]->down_state(down_button->get_state());
 
-		if(remote_module != module_index && choose_button->get_state())
+		if(choose_button->get_state())
 		{
 			
 			modules[module_index]->choose_state(true);
@@ -75,8 +85,6 @@ void Sterowanie::working_loop()
 
 			if(modules[module_index]->is_modyfing())
 			{
-				
-				
 				modyfing = true;
 			}
 		}
@@ -210,7 +218,7 @@ void Sterowanie::read_request()
 	{
 		i = 4;
 		int  v = 0;
-		while(recv_buffer[i] != ' ')
+		while(recv_buffer[i] != ' ' && recv_buffer[i] != '\n')
 		{
 			v *= 10;
 			v += int(recv_buffer[i]) - int('0');
@@ -247,8 +255,6 @@ int Sterowanie::write_availble(char * buffer)
 int Sterowanie::write_modules_info(char * buffer)
 {
 	int i = int_to_char(buffer, modules_number);
-	//int *ptr = (int*)&(buffer[0]);
-	//*ptr = modules_number;
 	buffer[i++] = '\n';
 
 	for(int j = 0; j < modules_number; j++)

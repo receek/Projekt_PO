@@ -62,24 +62,24 @@ lub
 
 Składnia komendy COM w zależności od modułu:
 
-CZT CZO CZW - Dla tych modułów zawsze będzie zwracane słowo "ERR", co oznacza, że tych modułów nie da się modyfikować
+CZT CZO CZW - Dla tych modułów zawsze będzie zwracane "ERR\n", co oznacza, że tych modułów nie da się modyfikować
 
 LAM: 
-	"COM 3 STR\n" -> ""  (STR włącza lampkę)
-	"COM 3 STP\n" -> ""  (STR wyłącza lampkę)
+	"COM 3 STR\n" -> "OK\n"  (STR włącza lampkę)
+	"COM 3 STP\n" -> "OK\n"  (STR wyłącza lampkę)
 
 
 BUZ:
-	"COM 4 CHN 123\n" -> ""  (CHN zmienia wartość głosnika na 123)
+	"COM 4 CHN 123\n" -> "OK\n"  (CHN zmienia wartość głosnika na 123)
 	"COM 4 CHN 123\n" -> "BLC"  (CHN nie zmienia wartości, wartość jest modyfikowana)
 
 	"COM 4 STR\n" -> ""  (STR włącza głośnik)
 	"COM 4 STP\n" -> ""  (STR wyłącza głośnik)
 
 RGB: 
-	"COM 5 CHN 123 54 250\n" -> ""  (CHN zmienia wartość RED na 123, GREEN na 54, BLUE na 250)
+	"COM 5 CHN 123 54 250\n" -> "OK\n"  (CHN zmienia wartość RED na 123, GREEN na 54, BLUE na 250)
 	"COM 5 CHN 123 54 250\n" -> "BLC"  (CHN nie zmienia wartości, wartość jest modyfikowana)
 
-	"COM 5 STR\n" -> ""  (STR włącza lampkę)
-	"COM 5 STP\n" -> ""  (STR wyłącza lampkę)
+	"COM 5 STR\n" -> "OK\n"  (STR włącza lampkę)
+	"COM 5 STP\n" -> "OK\n"  (STR wyłącza lampkę)
 

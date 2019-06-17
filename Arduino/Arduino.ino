@@ -9,7 +9,6 @@
 
 LiquidCrystal lcd(22, 23, 24, 25, 26, 27);
 
-// niby każde urządzenie w sieci musi mieć unikalny adres mac ale kto to będzie sprawdzał...
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 IPAddress ip(192, 168, 1, 177);
 EthernetServer server(8888);
@@ -23,8 +22,8 @@ Sterowanie sterownik(6, &lcd, &server, &up, &down, &apply, &choose);
 
 void setup() 
 {
-	Serial.begin(9600);
-  // put your setup code here, to run once
+	// put your setup code here, to run once
+	
 	uint8_t address[] = {0x28, 0x36, 0x18, 0x01, 0x00, 0x00, 0x80, 0x00};
 	int PWM[] = {2, 3, 4}; 
 	
@@ -44,7 +43,7 @@ void setup()
 
 void loop() 
 {
-  // put your main code here, to run repeatedly:
+	// put your main code here, to run repeatedly:
 
 	sterownik.working_loop();
 }

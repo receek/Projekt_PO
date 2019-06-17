@@ -13,7 +13,6 @@ active(true)
 	blocked = false;
 
 	pinMode(pin_pwm, OUTPUT);
-
 }
 
 void Lampka::apply_state(bool state)
@@ -129,11 +128,9 @@ int Lampka::procces_data(char* send_buff, char* recv_buff, int pos)
 	{
 		if(active) apply_state(true);
 	}
-	else
-	{
-		send_buff[0] = recv_buff[pos]; 
-		size = 1;
-	}
+
+	copy_str("OK\n", 3, send_buff, 0);
+	size = 3;
 
 	return size;
 }

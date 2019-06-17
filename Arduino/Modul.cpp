@@ -52,3 +52,18 @@ void Modul::copy_str(char* str, int size, char* buff, int pos)
 	}
 }
 
+int Modul::char_to_int(char* buff, int* pos, char end)
+{
+	int  v = 0;
+	while(buff[*pos] != end)
+	{
+		v *= 10;
+		v += int(buff[*pos]) - int('0');
+		(*pos)++; 
+	}
+
+	(*pos)++;
+
+	return v;
+}
+

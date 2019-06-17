@@ -1,7 +1,9 @@
 #include "RGB_led.h"
 
 RGB_led::RGB_led(int p[]):
-modyfing(-1), active(true), remote(false)
+modyfing(-1),
+active(true),
+remote(false)
 {  
 	for(int i = 0; i < 3; i++)
 	{
@@ -15,7 +17,6 @@ modyfing(-1), active(true), remote(false)
 	saved_time = millis();
 	refresh_time = 500;
 	blocked = false;
-
 }
 
 
@@ -175,39 +176,21 @@ int RGB_led::procces_data(char* send_buff, char* recv_buff, int pos)
 	{
 		pos += 4;
 
-		int  v = 0;
-		while(recv_buff[pos] != ' ')
-		{
-			v *= 10;
-			v += int(recv_buff[pos++]) - int('0');
-		}
-		pos++;
+		int  v = char_to_int(recv_buff, &pos, ' ');
 
 		if(v >= 0 && v <= 255)
 		{
 			value[0] = v;
 		}
 
-		v = 0;
-		while(recv_buff[pos] != ' ')
-		{
-			v *= 10;
-			v += int(recv_buff[pos++]) - int('0');
-		}
-		pos++;
+		v = char_to_int(recv_buff, &pos, ' ');
 		
 		if(v >= 0 && v <= 255)
 		{
 			value[1] = v;
 		}
 
-		v = 0;
-		while(recv_buff[pos] != '\n')
-		{
-			v *= 10;
-			v += int(recv_buff[pos++]) - int('0');
-		}
-		pos++;
+		v = char_to_int(recv_buff, &pos, '\n');
 		
 		if(v >= 0 && v <= 255)
 		{
@@ -224,11 +207,9 @@ int RGB_led::procces_data(char* send_buff, char* recv_buff, int pos)
 	{
 		if(active) apply_state(true);
 	}
-	else
-	{
-		send_buff[0] = recv_buff[pos]; 
-		size = 1;
-	}
+	
+	copy_str("OK\n", 3, send_buff, 0);
+	size = 3;
 
 	return size;
 }
