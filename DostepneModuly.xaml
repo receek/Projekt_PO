@@ -5,13 +5,18 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ProjektPO"
       mc:Ignorable="d" 
+      
       d:DesignHeight="450" d:DesignWidth="800"
       Title="DostepneModuly">
-
-    <Grid Background="Blue">
-        <StackPanel Grid.Column="3" Grid.Row="0" Grid.RowSpan="4">
-            <TextBlock Margin="10" Background="#eee" Text="Wybierz moduły" FontSize="20"/>
-            <ListBox Margin="10,10,0,13" Name="listBox1" HorizontalAlignment="Left" VerticalAlignment="Top" Width="194" Height="200" />
-        </StackPanel>
+    <Border BorderThickness="7" BorderBrush="LightBlue">
+        <Grid Background="Blue">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="3*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Margin="10" Background="LightGoldenrodYellow"
+                   FontSize="23" TextAlignment="Center" Text="Choose&#x0a;Modules"/>
+        <ListBox SelectionMode = "Multiple" Margin="10,33,0,13" Grid.Row="1" Name="listBox1" FontSize="21" HorizontalAlignment="Left" VerticalAlignment="Top"/>
     </Grid>
+    </Border>
 </Page>

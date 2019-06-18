@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Net;
+using System.Net.Sockets;
 
 namespace ProjektPO
 {
@@ -23,35 +25,63 @@ namespace ProjektPO
         MainWindow Rodzic;
         DostepneModuly dostepne = new DostepneModuly();
         Czujnik_Temperatury czujnik_Temperatury = new Czujnik_Temperatury();
+        Dictionary<string, string> map = new Dictionary<string, string>();
+        Dictionary<string, int> map2 = new Dictionary<string, int>();
         public bool Connection = false;
         public bool loadedModules = false;
         public bool choosenModules = false;
-
+        Nadklasa ST = new Nadklasa();
         public Home(MainWindow x)
         {
             InitializeComponent();
-            PODSTRONA.Content = dostepne;
             Rodzic = x;
+            map["RGB"] = "RGB";
+            map["CZT"] = "Temperature";
+            map["CZO"] = "Distance";
+            map["CZW"] = "Humidity";
+            map["LAM"] = "Light";
+            map["BUZ"] = "Buzzer";
+            map2["RGB\nModule"] = map2["Distance\nModule"] = map2["Temperature\nModule"] = map2["Humidity\nModule"]  = map2["Light\nModule"] = map2["Buzzer\nModule"] = 0;
         }
 
-        public bool CheckConnection()
-        {
+        public bool CheckConnection(){
+            string adresIP = IP.Text;
+            string port = Port.Text;
+
+            if (!Nadklasa.Init(adresIP, port))
+                return false;
+            Console.WriteLine(Nadklasa.SendMessage("HLL\n"));
             return true;
         }
 
         private void CheckConnectionButtonClick(object sender, RoutedEventArgs e){
-            Connection = CheckConnection();//COkolwiek XD
+            //---Playground mode ---
+            Connection = true;
+            ConnectedText.Text = "Connected";
+            return;
+            //-------------------
+            Connection = CheckConnection();
             if (Connection == true)
-                Connected.Text = "Connected";
+                ConnectedText.Text = "Connected";
             else
-                Connected.Text = "Disconnected";
+                ConnectedText.Text = "Disconnected";
         }
 
-        private void LoadModulesButtonClick(object sender, RoutedEventArgs e){
+        private void LoadDataButtonClick(object sender, RoutedEventArgs e){
+            if (!Connection)
+            {
+                MessageBox.Show("You have to be connected to load modules");
+                return;
+            }
             if (!loadedModules){
                 loadedModules = true;
+                PODSTRONA.Content = dostepne;
+                DataText.Text = "Loaded";
                 LoadModules();
             }            
+            else
+                MessageBox.Show("You can only load modules once");
+
         }
 
         public int ConvertFromName(){
@@ -59,9 +89,14 @@ namespace ProjektPO
         }
 
         private void ChooseModulesButtonClick(object sender, RoutedEventArgs e){
-            if (choosenModules)
+            if (!loadedModules){
+                MessageBox.Show("First you need to load modules");
                 return;
-            choosenModules = true;
+            }
+            if (choosenModules){
+                MessageBox.Show("You can only choose modules once");
+                return;
+            }
             string[] nazwy;
             int ile = 0;
             foreach( CheckBox b in dostepne.listBox1.Items)
@@ -71,51 +106,85 @@ namespace ProjektPO
             int it = 0;
             foreach (CheckBox b in dostepne.listBox1.Items)
                 if (b.IsChecked == true)
-                    nazwy[it++] = (string)b.Content;
+                    nazwy[it++] = (string)b.Content+ "\nModule";
             Rodzic.Tablica = new Nadklasa[ile];
             Console.WriteLine(ile);
-            System.Console.WriteLine("ZARAZ");
             for (int i = 0; i < ile; i++){
-                System.Console.WriteLine(nazwy[i] + "OK");
-                if(nazwy[i] == "CZT")
+                if(nazwy[i] == "Temperature\nModule")
                     Rodzic.Tablica[i] = new KlasaCzujnikaTemperatury();
-                if(nazwy[i] == "BUZ")
+                if(nazwy[i] == "Buzzer\nModule")
                     Rodzic.Tablica[i] = new KlasaBuzzer();
-                if(nazwy[i] == "RGB")
+                if(nazwy[i] == "RGB\nModule")
                     Rodzic.Tablica[i] = new KlasaRGB();
-                if(nazwy[i] == "WIL")
+                if(nazwy[i] == "Humidity\nModule")
                     Rodzic.Tablica[i] = new KlasaCzujnikaWilgotnosci();
-                if(nazwy[i] == "ODL")
+                if(nazwy[i] == "Distance\nModule")
                     Rodzic.Tablica[i] = new KlasaCzujnikaOdleglosci();
-                if (nazwy[i] == "LAM")
+                if(nazwy[i] == "Light\nModule")
                     Rodzic.Tablica[i] = new KlasaLampki();
                 Button x = new Button();
                 x.Tag = i;
-                x.Content = nazwy[i] + i.ToString();
-                x.Name = nazwy[i] + i.ToString();
+                x.Content = nazwy[i];
+                map2[nazwy[i]] += 1;
+                if(map2[nazwy[i]] > 1)
+                    x.Content += "(" + map2[nazwy[i]] + ")";
                 x.Click += Rodzic.B_Click;
+                x.HorizontalAlignment = HorizontalAlignment.Center;
+                x.FontSize = 14;
                 Rodzic.LISTBOX.Items.Add(x);
             }
+            if(ile == 0)
+            {
+                MessageBox.Show("You have not choose any modules");
+                return;
+            }
+            choosenModules = true;
+            ModulesText.Text = "Choosen";
+            MessageBox.Show("You have succesfully selected " + ile + " modules that you can navigate now");
         }
 
-        public void LoadModules()
-        {
-            int ile_dostalem_itemkow = 7;
-            string[] itemki = new string[ile_dostalem_itemkow];//Przykladowe moduly Jakie od Cb dostane
-            itemki[0] = "CZT";
-            itemki[1] = "BUZ";
-            itemki[2] = "LAM";
-            itemki[3] = "WIL";
-            itemki[4] = "RGB";
-            itemki[5] = "CZT";
-            itemki[6] = "ODL";
+        public int wyluskaj(string x){
+            int dl = 0;
+            while(x[dl] != '\n')
+                dl++;
+            return dl;
+        }
 
-            for(int i = 0; i < ile_dostalem_itemkow; i++){
+        public void LoadModules(){
+            //-------Playground Mode--------
+            CheckBox t = new CheckBox();
+            t.Content = "RGB";
+            dostepne.listBox1.Items.Add(t);
+            t = new CheckBox();
+            t.Content = "Buzzer";
+            dostepne.listBox1.Items.Add(t);
+            t = new CheckBox();
+            t.Content = "Humidity";
+            dostepne.listBox1.Items.Add(t);
+            t = new CheckBox();
+            t.Content = "Temperature";
+            dostepne.listBox1.Items.Add(t);
+            t = new CheckBox();
+            t.Content = "Distance";
+            dostepne.listBox1.Items.Add(t);
+            t = new CheckBox();
+            t.Content = "Light";
+            dostepne.listBox1.Items.Add(t);
+            t = new CheckBox();
+            t.Content = "Light";
+            dostepne.listBox1.Items.Add(t);
+            return;
+            //------------------------------
+           
+            string modolki = Nadklasa.SendMessage("ASK\n");
+            int dl = wyluskaj(modolki);
+            int val = Convert.ToInt32(modolki.Substring(0, dl));
+            for(int i = 0; i < val; i++){
+                string nazwa = map[modolki.Substring(dl + 1 + 4 * i, 3)];
                 CheckBox temp = new CheckBox();
-                temp.Content = itemki[i];
+                temp.Content = nazwa;
                 dostepne.listBox1.Items.Add(temp);
             }
         }
-
     }
 }

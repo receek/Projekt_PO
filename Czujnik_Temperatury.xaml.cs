@@ -21,11 +21,18 @@ namespace ProjektPO
     /// </summary>
     public partial class Czujnik_Temperatury : Page
     {
+        Home Rodzic;
+        int Address;
         //DostepneModuly dostepne = new DostepneModuly();
         //public ObservableCollection<BoolStringClass> myItemList { get; set; }
-        public Czujnik_Temperatury()
+        public Czujnik_Temperatury(Home x, int y)
         {
             InitializeComponent();
+            Rodzic = x;
+            Address = x;
         }
+
+        public Update()
+
     }
 }

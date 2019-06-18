@@ -14,8 +14,7 @@
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
+
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -23,9 +22,19 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
             <ColumnDefinition/>
-            <ColumnDefinition/>
+
         </Grid.ColumnDefinitions>
-        <TextBlock FontSize="30" Foreground="BlueViolet" Grid.Row="1" Grid.Column="1" Text="Lampka" FontFamily="Symbol" />
-        <TextBox Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="2"/>
+        <TextBlock FontSize="50" TextAlignment="Center" Margin="20" Foreground="BlueViolet" Grid.ColumnSpan="2" Text="Lampka"/>
+
+        <Button Name="ON" Margin="20" Grid.Row="0" Grid.Column="2" FontSize="25" Content="Switch ON"/>
+        <Button Name="XX" Margin="20" Grid.Row="1" Grid.Column="2" FontSize="25" Content="Get light&#x0a; intenity"/>
+
+        <TextBlock VerticalAlignment="Bottom" Margin="12,4, 5, 6" Grid.ColumnSpan="3" TextAlignment="Left" FontSize="22" Background="Transparent" Foreground="DarkSlateBlue" Text="List of most recent 5 stored measures:" Grid.Column="0" Grid.Row="2"/>
+
+        <TextBlock Margin="12" FontSize="60" TextAlignment="Center" Background="LightCoral" Foreground="DarkSlateBlue" Name ="A"  Grid.Column="0" Grid.Row="3"/>
+        <TextBlock Margin="12" FontSize="60" TextAlignment="Center" Background="LightCoral" Foreground="DarkSlateBlue" Name ="B"  Grid.Column="1" Grid.Row="3"/>
+        <TextBlock Margin="12" FontSize="60" TextAlignment="Center" Background="LightCoral" Foreground="DarkSlateBlue" Name ="C"  Grid.Column="2" Grid.Row="3"/>
+        <TextBlock Margin="12" FontSize="60" TextAlignment="Center" Background="LightCoral" Foreground="DarkSlateBlue" Name ="D"  Grid.Column="3" Grid.Row="3"/>
+        <TextBlock Margin="12" FontSize="60" TextAlignment="Center" Background="LightCoral" Foreground="DarkSlateBlue" Name ="E"  Grid.Column="4" Grid.Row="3"/>
     </Grid>
 </Page>
