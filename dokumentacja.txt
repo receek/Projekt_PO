@@ -1,0 +1,33 @@
+
+1. Fabularne przedstawienie projektu.
+
+Celem projektu jest stworzenie urządzenia zarządzającego zestawem czujników pomiarowych i urządzeń peryferyjnych które mogą reagować na odczytane wartości. Nasze urządzenie będzie bazowało na mikrokontrolerze Arduino programowanym w językach C/C++ oraz zostanie wyposażone w zestaw przycisków i ekranu LCD dzięki czemu użytkownik ma możliwość zarządzać urządzeniem bezpośrednio będąc przy nim.
+Paradygmat języka C++ pozwala na wprowadzenie modelu obiektowego, dzięki czemu jesteśmy w stanie sterować naszą aparaturą w sposób małoskomplikowany i przejrzysty na poziomie kodu. Dodatkowo do urządzenia jest podpięty moduł Ethernet, który pozwala na komunikację sieciową dzięki czemu użytkownik ma możliwość zarządzać urządzeniem zdalnie. Aplikacja okienkowa przeznaczona do zdalnej komunikacji została zaimplementowana w języku C# w Frameworku WPF.
+
+Do Arduino zostały zaprojektowane i podłączone moduły:
+-czujnik temperatury
+-czujnik wilgotności
+-czujnik odległości
+-dioda RGB
+-głośnik (Buzzer)
+-lampka (fotorezystor sterujący jasnością diody LED)
+
+2. Instrukcja uruchomienia
+
+Arduino:
+W przesłanym kodzie zostały zdefiniowane wszytkie przewidziane rodzaje modułów, które zarządzają peryferiami. Aby poprawnie uruchomić mikrokontroler należy wedle potrzeby skonfigurować socket TCP adresem IP i numerem portu, skompilwoać projekt i załadowac do mikrokontrolera.
+
+Aplikacja zdalna:
+
+(~~~)
+
+3.
+
+Arduino:
+Klasa Sterowanie - odpowiada za komunikację z użytkownikiem, zarówno za pomocą przycisków/LCD jak i tą zdalną. Posiada pointer do instancji klas pochodnych po klasie Modul 
+
+Klasa Przycisk - zarządza pojedyńczym przyciskiem podłączonym do styku Arduino
+
+Klasa abstrakcyjna Modul - definiuje metody wirtualne, które powinny być zdefiniowane w kalsach pochodnych aby ułatwić zarządzanie peryferiami z poziomu klasy Sterowanie
+
+
