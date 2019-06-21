@@ -1,0 +1,73 @@
+﻿<Page x:Class="ProjektPO.Home"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ProjektPO"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Home">
+    <!--&#x0a;    newline-->
+    <Grid Background="#eef">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Border Margin="7" Grid.Row="1" Grid.ColumnSpan="2" BorderThickness="8" BorderBrush="LightBlue">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" Text="Enter IP address:" Grid.ColumnSpan="2" Margin="1,0,275,41.2" Grid.RowSpan="2"/>
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" Grid.Column="1" Text="Enter Socket port:"/>
+                <TextBox HorizontalAlignment="Center" FontSize="20" TextAlignment="Center" Text="192.168.1.177" Name="IP" Grid.Row="1" Margin="5" MinWidth="190" />
+                <TextBox HorizontalAlignment="Center" FontSize="20" TextAlignment="Center" Text="8888" Name="Port" Grid.Row="1" Margin="5" MinWidth="190" Grid.Column="1" />
+            </Grid>
+        </Border>
+        <TextBlock Text="Home" Grid.ColumnSpan="2" HorizontalAlignment="Center"
+                   VerticalAlignment="Center" FontSize="70"/>
+        <Border Margin="7" Grid.Row="2" Grid.RowSpan="3" BorderThickness="8" BorderBrush="LightBlue">
+            <StackPanel Background="#ccc">
+                <TextBlock FontSize="15" Padding="8" Text="Buttons for actions:" ></TextBlock>
+                <Button MinHeight="40" MinWidth="170" HorizontalAlignment="Center" Margin="5" Name="CheckConnectionButton" Content="Check Connection" FontSize="20" Click="CheckConnectionButtonClick"/>
+                <Button MinHeight="40" MinWidth="170" HorizontalAlignment="Center" Margin="5" Name="LoadDataButton" Content="Load Modules" FontSize="20" Click="LoadDataButtonClick"/>
+                <Button MinHeight="40" MinWidth="170" HorizontalAlignment="Center" Margin="5" Name="ChooseModulesButton" Content="Choose Modules" FontSize="20" Click="ChooseModulesButtonClick"/>
+            </StackPanel>
+        </Border>
+        <Border Margin="7" Grid.Column="1" Grid.Row="2" Grid.RowSpan="3" BorderThickness="8" BorderBrush="LightBlue">
+            <StackPanel Background="#dde" Grid.Row="1" Grid.Column="1" Grid.RowSpan="3">
+                <TextBlock FontSize="15" Padding="8" Text="State of the application:" />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel >
+                        <TextBlock MinHeight="40" Grid.Column="1" Margin="5" Text ="Connection:" Grid.Row="2" FontSize="20"/>
+                        <TextBlock MinHeight="40" Grid.Column="1" Margin="5" Text ="Data:" Grid.Row="2" FontSize="20"/>
+                        <TextBlock MinHeight="40" Grid.Column="1" Margin="5" Text ="Modules:" Grid.Row="2" FontSize="20"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1">
+                        <TextBlock MinHeight="40" TextAlignment="Center" MinWidth="125" Grid.Column="1" HorizontalAlignment="Center" Margin="5" x:Name="ConnectedText" Text ="Disconnected" Grid.Row="2" Background="LightSlateGray" FontSize="20"/>
+                        <TextBlock MinHeight="40" TextAlignment="Center" MinWidth="125" Grid.Column="1" HorizontalAlignment="Center" Margin="5" x:Name="DataText" Text ="Not Loaded" Grid.Row="2" Background="LightSlateGray" FontSize="20"/>
+                        <TextBlock MinHeight="40" TextAlignment="Center" MinWidth="125" Grid.Column="1" HorizontalAlignment="Center" Margin="5" x:Name="ModulesText" Text ="Not Choosen" Grid.Row="2" Background="LightSlateGray" FontSize="20"/>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </Border>
+        <Frame Grid.Row="0" Grid.Column="3" Grid.RowSpan="5" x:Name="PODSTRONA" Margin="7" NavigationUIVisibility="Hidden"/>
+    </Grid>
+</Page>

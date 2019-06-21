@@ -49,11 +49,17 @@ Aplikacja zdalna:
 Klasa: Nadklasa - Odpowiada za bezpośrednie wysyłanie komunikatów do modułów. Zawiera również statyczną metodę pozwalającą na odszyfrowywanie komunikatów otrzymywanych z nich.
 
 Klasy dziedziczące po nadklasie, odpowiedzialne również za sprecyzowanie informacji przekazywanej do modułu:
+
 Klasa: KlasaBuzzer - Komunikacja z głośnikiem (zwiększanie i zmniejszanie częstotliwości, włączanie i wyłączanie)
+
 Klasa: KlasaCzujnikaOdleglosci - Komunikacja z czujnikiem odległości(zapytanie o odległość do najbliższego obiektu)
+
 Klasa: KlasaCzujnikaTemperatury - Komunikacja z czujnikiem ciepła(zapytanie o temperaturę)
+
 Klasa: KlasaCzujnikaWilgotnosci - Komunikacja z czujnikiem wilgotności(zapytanie o procentową wilgotność)
+
 Klasa: KlasaLampki - Włącznie, wyłącznie diody, zapytanie o jej stan, zapytanie o wskazanie fotorezystora
+
 Klasa: KlasaRGB - Włącznie i wyłączanie, stan diody RGB i kolor generowanego światła, zamienianie koloru zgodnie ze standardami RGB.
 
 Strony XAMLOWE, zsynchronizowane z plikami xaml.cs - odpowiadają za wygląd stron graficznych stron, oraz implementację reagowanie na zdarzenia wywołane interakcją z użytkownikiem.

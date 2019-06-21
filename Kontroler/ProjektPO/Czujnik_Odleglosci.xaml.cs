@@ -1,0 +1,56 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
+namespace ProjektPO{
+    public partial class Czujnik_Odleglosci : Page{
+        Home Rodzic;
+        int idTab;
+        int idMod;
+        int count = 0;
+        bool saved = false;
+        public Czujnik_Odleglosci(int IDTAB, int IDMOD, Home Ro)
+        {
+            InitializeComponent();
+            idTab = IDTAB;
+            idMod = IDMOD;
+            Rodzic = Ro;
+        }
+
+        private void SaveDistance_Click(object sender, RoutedEventArgs e)
+        {
+            string p = Actual.Text;
+            if (p == "NONE")
+            {
+                MessageBox.Show("You Have not measured a thing yet");
+                return;
+            }
+            if (saved)
+            {
+                MessageBox.Show("You are trying to save the same result twice");
+                return;
+            }
+            saved = true;
+            Dane.Items.Add("Measure nr" + count.ToString() + ": " + p + " cm");
+        }
+
+        private void GetDistance_Click(object sender, RoutedEventArgs e)
+        {
+            saved = false;
+            count++;
+            string p = Rodzic.Rodzic.Tablica[idTab].AskDistance(idMod);
+            Actual.Text = Nadklasa.slowo(p, 1);
+        }
+    }
+}
