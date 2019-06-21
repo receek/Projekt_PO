@@ -1,0 +1,68 @@
+1. Fabularne przedstawienie projektu.
+
+Celem projektu jest stworzenie urządzenia zarządzającego zestawem czujników pomiarowych i urządzeń peryferyjnych, które mogą reagować na odczytane wartości. Nasze urządzenie będzie bazowało na mikrokontrolerze Arduino programowanym w językach C/C++ oraz zostanie wyposażone w zestaw przycisków i ekranu LCD, dzięki czemu użytkownik ma możliwość zarządzać urządzeniem, bezpośrednio będąc przy nim.
+Paradygmat języka C++ pozwala na wprowadzenie modelu obiektowego, dzięki czemu jesteśmy w stanie sterować naszą aparaturą w sposób małoskomplikowany i przejrzysty na poziomie kodu. Dodatkowo do urządzenia jest podpięty moduł Ethernet, który pozwala na komunikację sieciową, dzięki czemu użytkownik ma możliwość zarządzać urządzeniem zdalnie. Aplikacja okienkowa przeznaczona do zdalnej komunikacji została zaimplementowana w języku C# w Frameworku WPF.
+
+Do Arduino zostały zaprojektowane i podłączone moduły:
+-czujnik temperatury
+-czujnik wilgotności
+-czujnik odległości
+-dioda RGB
+-buzzer (głośnik)
+-lampka (fotorezystor sterujący jasnością diody LED)
+
+2. Instrukcja uruchomienia
+
+Arduino:
+W przesłanym kodzie zostały zdefiniowane wszystkie przewidziane rodzaje modułów, które zarządzają peryferiami. Aby poprawnie uruchomić mikrokontroler należy wedle potrzeby skonfigurować socket TCP adresem IP i numerem portu, skompilwoać projekt i załadować do mikrokontrolera.
+
+Aplikacja zdalna:
+
+Aplikacja zdalna może zostać uruchomiona w charakterze projektu w środowisku Visual Studio. Po włączeniu ukazuje się naszym oczom okienko
+kontroli zestawu Arduino. Należy wpisać odpowiedni adres IP urządzenia oraz numer portu. Po połączeniu trzeba załadować dostępne moduły
+i określić, których z nich chcemy używać. Następnie w pasku zakładek ukaże się nam menu wyboru modułów. Każdy z modułów zawiera interaktywny
+interfejs graficzny, który pozwala na łatwą jego obsługę.
+
+3.
+
+Arduino:
+Klasa Sterowanie - odpowiada za komunikację z użytkownikiem, zarówno za pomocą przycisków/LCD i przez aplikacją zdalną. W obiekcie tej klasy dołączamy moduły, jakie pragniemy, aby zostały obsługiwane przez mikrokontroler.
+
+Klasa Przycisk - zarządza pojedynczym przyciskiem podłączonym do styku Arduino
+
+Klasa abstrakcyjna Modul - definiuje metody wirtualne, które powinny być zdefiniowane w klasach pochodnych aby ułatwić zarządzanie peryferiami z poziomu klasy Sterowanie
+
+Klasa Czujnik_temperatury - dziedziczy po Modul, obsługuje pojedynczy czujnik temperatury
+
+Klasa Czujnik_wilgotnosci - dziedziczy po Modul, obsługuje pojedynczy czujnik wilgoci
+
+Klasa Czujnik_odległosci - dziedziczy po Modul, obsługuje pojedynczy czujnik odległości
+
+Klasa Dioda_RGB - dziedziczy po Modul, zarządza diodą RGB, pozwala na zmianę koloru diody bezpośrednio przyciskami oraz zdalnie
+
+Klasa Buzzer - dziedziczy po Modul, zarządza głośnikiem, pozwala na zmianę wartości i wydawanie dźwięku bezpośrednio przyciskami oraz zdalnie
+
+Klasa Lampka - dziedziczy po Modul, zarządza diodą i fotorezystorem, dioda świeci gdy na czujnik nie będzie wystarczająco oświetlony, im mniej światła na niego pada tym jaśniej świeci dioda, diodę można włączyć/wyłączyć za pomocą przycisku lub zdalnie.
+
+Aplikacja zdalna:
+
+Klasa: Nadklasa - Odpowiada za bezpośrednie wysyłanie komunikatów do modułów. Zawiera również statyczną metodę pozwalającą na odszyfrowywanie komunikatów otrzymywanych z nich.
+
+Klasy dziedziczące po nadklasie, odpowiedzialne również za sprecyzowanie informacji przekazywanej do modułu:
+Klasa: KlasaBuzzer - Komunikacja z głośnikiem (zwiększanie i zmniejszanie częstotliwości, włączanie i wyłączanie)
+Klasa: KlasaCzujnikaOdleglosci - Komunikacja z czujnikiem odległości(zapytanie o odległość do najbliższego obiektu)
+Klasa: KlasaCzujnikaTemperatury - Komunikacja z czujnikiem ciepła(zapytanie o temperaturę)
+Klasa: KlasaCzujnikaWilgotnosci - Komunikacja z czujnikiem wilgotności(zapytanie o procentową wilgotność)
+Klasa: KlasaLampki - Włącznie, wyłącznie diody, zapytanie o jej stan, zapytanie o wskazanie fotorezystora
+Klasa: KlasaRGB - Włącznie i wyłączanie, stan diody RGB i kolor generowanego światła, zamienianie koloru zgodnie ze standardami RGB.
+
+Strony XAMLOWE, zsynchronizowane z plikami xaml.cs - odpowiadają za wygląd stron graficznych stron, oraz implementację reagowanie na zdarzenia wywołane interakcją z użytkownikiem.
+Najczęściej składa się na to obsługa przycisków, sliderów i textboxów odpowiadających za włączanie/wyłączanie modułów oraz pobieranie z nich danych. To w nich znajduje się najwięcej kodu odpowiedzialnego za mechanikę stron wyślwietlanych w aplikacji.
+
+4. Diagramy klas będą załączone w plikach graficznych. Wygenerowane za pomocą programu Visual Paradigm
+
+5. Wzorce projektowe
+
+Arduino: Fasada
+
+Aplikacja zdalna: Kompozyt
