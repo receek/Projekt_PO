@@ -66,4 +66,3 @@ int Modul::char_to_int(char* buff, int* pos, char end)
 
 	return v;
 }
-

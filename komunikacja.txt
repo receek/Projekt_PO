@@ -6,7 +6,7 @@ Mamy 4 główne komendy do porozumiewania się przez sieć:
 Sprawdzamy czy tą komendą czy łączymy się z Arduino.
 
 2. Komenda "ASK\n" -> "lista modułów"
-Odpowiedź wygląda tak, że w pierwszej lini mamy liczbę całkowitą N, który oznacza ile modułów jest podłączonych do Arduino. W kolejnych N liniach znajdują znajdują się moduły określone 3 znakowymi oznaczeniami. 
+Odpowiedź wygląda tak, że w pierwszej lini mamy liczbę całkowitą N, który oznacza ile modułów jest podłączonych do Arduino. W kolejnych N liniach znajdują się moduły określone 3 znakowymi oznaczeniami. 
 Przykład(#1) zapytania/odpowiedzi który zawiera wszystkie rodzaje modułów:
 
 ASK ->

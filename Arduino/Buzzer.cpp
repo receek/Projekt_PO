@@ -11,7 +11,6 @@ modyfing(false)
 {  
 	saved_time = millis();
 	refresh_time = 50;
-	blocked = false;
 
 	pinMode(out, OUTPUT);
 	analogWrite(out, 0);
@@ -57,12 +56,10 @@ void Buzzer::choose_state(bool state)
 {
 	if(modyfing)
 	{
-		blocked = false;
 		modyfing = false;
 	}
 	else
 	{
-		blocked = true;
 		modyfing = true;
 	}
 }

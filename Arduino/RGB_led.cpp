@@ -16,7 +16,6 @@ remote(false)
 
 	saved_time = millis();
 	refresh_time = 500;
-	blocked = false;
 }
 
 
@@ -41,7 +40,7 @@ void RGB_led::down_state(bool state)
 void RGB_led::apply_state(bool state)
 {
 
-	if(!blocked && state)
+	if(state)
 	{
 		if(active)
 		{
@@ -69,12 +68,10 @@ void RGB_led::choose_state(bool state)
 {
 	if(modyfing < 0)
 	{
-		blocked = true;
 		modyfing++;
 	}
 	else if(modyfing == 2)
 	{
-		blocked = false;
 		modyfing = -1;
 	}
 	else

@@ -9,7 +9,6 @@ last_distance(-1)
 {  
 	saved_time = millis();
 	refresh_time = 1000;
-	blocked = false;
 
 	pinMode(trig_pin, OUTPUT);
   	pinMode(echo_pin, INPUT);  

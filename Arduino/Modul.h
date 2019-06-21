@@ -9,14 +9,11 @@
 
 class Modul
 {
-private:
-  
-  
+
 protected:
 	unsigned long saved_time;
 	unsigned long refresh_time;
 
-	bool blocked;
 	Modul() {}
 	
   	bool compare_str(char*, char*, int, int);

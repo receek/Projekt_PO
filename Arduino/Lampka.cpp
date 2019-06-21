@@ -10,14 +10,13 @@ active(true)
 {  
 	saved_time = millis();
 	refresh_time = 150;
-	blocked = false;
 
 	pinMode(pin_pwm, OUTPUT);
 }
 
 void Lampka::apply_state(bool state)
 {
- 	if(!blocked && state)
+ 	if(state)
 	{
 		if(active)
 		{
@@ -134,4 +133,3 @@ int Lampka::procces_data(char* send_buff, char* recv_buff, int pos)
 
 	return size;
 }
-

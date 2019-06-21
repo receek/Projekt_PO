@@ -9,10 +9,8 @@ sensor(wire_pin, DHT11)
 {  
 	saved_time = millis();
 	refresh_time = 2000;
-	blocked = false;
 
 	sensor.begin();
-	//humidity = sensor.readHumidity();
 }
 void Czujnik_wilgotnosci::print_data(LiquidCrystal* lcd, bool screen_change)
 {
